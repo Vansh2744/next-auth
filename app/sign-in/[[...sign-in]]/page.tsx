@@ -32,9 +32,12 @@ const Signin = () => {
       } else {
         console.log(result);
       }
-    } catch (err: any) {
-      console.log(JSON.stringify(err, null, 2));
-      setClerkError(err.errors[0].message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setClerkError(err.message);
+      } else {
+        setClerkError("An unknown error occurred.");
+      }
     }
   };
 

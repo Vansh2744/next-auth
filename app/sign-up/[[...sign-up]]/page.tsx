@@ -34,8 +34,12 @@ const Signup = () => {
 
       // change the UI to our pending section.
       setVerifying(true);
-    } catch (err: any) {
-      setClerkError(err.errors[0].message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setClerkError(err.message);
+      } else {
+        setClerkError("An unknown error occurred.");
+      }
     }
   };
 

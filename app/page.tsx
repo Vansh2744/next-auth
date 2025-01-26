@@ -1,11 +1,10 @@
 // app/page.tsx
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { isSignedIn } = useUser();
 
   return (
     <div className="text-center flex flex-col gap-4 content-center h-screen items-center">
