@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSignUp } from "@clerk/nextjs";
 import SignupForm from "@/app/components/SignUpForm";
 import VerifyForm from "@/app/components/VerifyForm";
+import axios from "axios";
 
 const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -51,6 +52,9 @@ const Signup = () => {
       }
 
       if (completeSignUp.status === "complete") {
+        await axios.post("/api/createUser", {
+          email: completeSignUp.emailAddress,
+        });
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/");
       }
