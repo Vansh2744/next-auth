@@ -95,7 +95,7 @@ function Admin() {
     e.preventDefault();
     try {
       const upload = async () => {
-        const res = await axios.post("/api/upload", {
+        await axios.post("/api/upload", {
           frontSide,
           leftSide,
           rightSide,
