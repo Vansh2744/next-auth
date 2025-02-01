@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, FormEvent } from "react";
-import { ImageKitProvider, IKImage, IKUpload } from "imagekitio-next";
+import React, { useState, FormEvent } from "react";
+import { ImageKitProvider, IKUpload } from "imagekitio-next";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,26 @@ import {
 const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
 const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
 
+interface ImageUploadResponse {
+  fileId: string;
+  name: string;
+  url: string;
+  height?: number;
+  width?: number;
+  size?: number;
+  filePath?: string;
+}
+
+interface AuthResponse {
+  signature: string;
+  expire: number;
+  token: string;
+}
+
+interface Error {
+  message: string;
+}
+
 function Admin() {
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
@@ -29,7 +49,7 @@ function Admin() {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
 
-  const authenticator = async () => {
+  const authenticator = async (): Promise<AuthResponse> => {
     try {
       const response = await fetch("/api/auth");
 
@@ -40,7 +60,7 @@ function Admin() {
         );
       }
 
-      const data = await response.json();
+      const data: AuthResponse = await response.json();
       const { signature, expire, token } = data;
       return { signature, expire, token };
     } catch (error) {
@@ -48,12 +68,12 @@ function Admin() {
     }
   };
 
-  const onError = (err: any) => {
+  const onError = (err: Error) => {
     setUploading(false);
     console.log("Error", err);
   };
 
-  const onImageSuccess = (res: any) => {
+  const onImageSuccess = (res: ImageUploadResponse) => {
     setFrontSide(res.url);
     console.log("Success", res);
   };

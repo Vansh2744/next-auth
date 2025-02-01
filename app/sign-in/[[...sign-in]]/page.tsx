@@ -13,7 +13,6 @@ const Signin = () => {
     password: "",
   });
   const { isLoaded, signIn, setActive } = useSignIn();
-  const [clerkError, setClerkError] = useState("");
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,9 +47,9 @@ const Signin = () => {
       }
     } catch (err) {
       if (err instanceof Error) {
-        setClerkError(err.message);
+        console.error(err.message);
       } else {
-        setClerkError("An unknown error occurred.");
+        console.error("An unknown error occurred.");
       }
     }
   };
