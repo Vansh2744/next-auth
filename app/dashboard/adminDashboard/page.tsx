@@ -41,10 +41,10 @@ interface Error {
 function Admin() {
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
-  const [frontSide, setFrontSide] = useState<String | null>(null);
-  const [leftSide, setLeftSide] = useState<String | null>(null);
-  const [rightSide, setRightSide] = useState<String | null>(null);
-  const [backSide, setBackSide] = useState<String | null>(null);
+  const [frontSide, setFrontSide] = useState<string | null>(null);
+  const [leftSide, setLeftSide] = useState<string | null>(null);
+  const [rightSide, setRightSide] = useState<string | null>(null);
+  const [backSide, setBackSide] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
