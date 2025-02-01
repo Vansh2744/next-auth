@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSignUp } from "@clerk/nextjs";
 import axios from "axios";
@@ -7,11 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ReactCodeInput from "react-code-input";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
   const [verifying, setVerifying] = useState(false);
+  const [signedUp, setSignedUp] = useState(false);
   const [code, setCode] = useState("");
   const [user, setUser] = useState({
     firstname: "",
@@ -20,6 +22,12 @@ const Signup = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (signedUp) {
+      toast.success("Account Created Successfully");
+    }
+  }, [signedUp]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -72,6 +80,7 @@ const Signup = () => {
           username: completeSignUp.username,
           email: completeSignUp.emailAddress,
         });
+        setSignedUp(true);
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/");
       }

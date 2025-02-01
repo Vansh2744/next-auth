@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
 
 export async function POST(req: Request) {
     try {
@@ -8,18 +7,6 @@ export async function POST(req: Request) {
 
         if (!frontSide || !leftSide || !rightSide || !backSide) {
             return NextResponse.json({ message: "All Fileds are required" }, { status: 401 })
-        }
-
-        const currUser = await currentUser();
-
-        const email = currUser?.emailAddresses[0]?.emailAddress;
-
-        const user = await prisma.user.findFirst({
-            where: { email }
-        })
-
-        if (!user) {
-            return NextResponse.json({ message: "No User Found" })
         }
 
         const res = await prisma.product.create({

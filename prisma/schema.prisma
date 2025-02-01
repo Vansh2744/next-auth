@@ -19,6 +19,7 @@ model User {
   lastname  String
   username  String
   email     String
+  role      String    @default("user")
   cartItems Product[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

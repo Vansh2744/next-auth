@@ -13,6 +13,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import toast from "react-hot-toast";
 
 const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
 const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
@@ -40,10 +41,10 @@ interface Error {
 function Admin() {
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
-  const [frontSide, setFrontSide] = useState("");
-  const [leftSide, setLeftSide] = useState("");
-  const [rightSide, setRightSide] = useState("");
-  const [backSide, setBackSide] = useState("");
+  const [frontSide, setFrontSide] = useState<String | null>(null);
+  const [leftSide, setLeftSide] = useState<String | null>(null);
+  const [rightSide, setRightSide] = useState<String | null>(null);
+  const [backSide, setBackSide] = useState<String | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -75,29 +76,22 @@ function Admin() {
 
   const onImageSuccess = (res: ImageUploadResponse) => {
     setFrontSide(res.url);
-    console.log("Success", res);
   };
 
   const onLeftImageSuccess = (res: ImageUploadResponse) => {
     setLeftSide(res.url);
-    console.log("Success", res);
   };
 
   const onRightImageSuccess = (res: ImageUploadResponse) => {
     setRightSide(res.url);
-    console.log("Success", res);
   };
 
   const onBackImageSuccess = (res: ImageUploadResponse) => {
     setBackSide(res.url);
-    console.log("Success", res);
-  };
-
-  const onUploadingStart = () => {
-    setUploading(true);
   };
 
   const handleSubmit = async (e: FormEvent) => {
+    setUploading(true);
     e.preventDefault();
     try {
       const upload = async () => {
@@ -113,7 +107,10 @@ function Admin() {
         });
         setUploading(false);
         setUploaded(true);
-        console.log(res);
+        toast.success("Product Uploaded Successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       };
 
       upload();
@@ -128,106 +125,127 @@ function Admin() {
       publicKey={publicKey}
       authenticator={authenticator}
     >
-      <div>
-        <IKUpload
-          fileName="productimage.jpg"
-          onError={onError}
-          onSuccess={onImageSuccess}
-          onUploadStart={onUploadingStart}
-        />
-        <IKUpload
-          fileName="productimage.jpg"
-          onError={onError}
-          onSuccess={onLeftImageSuccess}
-          onUploadStart={onUploadingStart}
-        />
-        <IKUpload
-          fileName="productimage.jpg"
-          onError={onError}
-          onSuccess={onRightImageSuccess}
-          onUploadStart={onUploadingStart}
-        />
-        <IKUpload
-          fileName="productimage.jpg"
-          onError={onError}
-          onSuccess={onBackImageSuccess}
-          onUploadStart={onUploadingStart}
-        />
-        <form onSubmit={handleSubmit} className="text-black">
-          <Input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-          />
-          <Input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description"
-          />
-          <Input
-            type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Price"
-          />
-          <NavigationMenu className="float-right mr-2">
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>
-                  {!category ? "Category" : category}
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="flex flex-col cursor-pointer">
-                    <NavigationMenuLink
-                      className="hover:bg-slate-200"
-                      onClick={() => setCategory("Electronics")}
-                    >
-                      Electronics
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      className="hover:bg-slate-200"
-                      onClick={() => setCategory("Beauty")}
-                    >
-                      Beauty
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      className="hover:bg-slate-200"
-                      onClick={() => setCategory("Fashion")}
-                    >
-                      Fashion
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      className="hover:bg-slate-200"
-                      onClick={() => setCategory("Sports")}
-                    >
-                      Sports
-                    </NavigationMenuLink>
-                    <NavigationMenuLink
-                      className="hover:bg-slate-200"
-                      onClick={() => setCategory("Toys")}
-                    >
-                      Toys
-                    </NavigationMenuLink>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          <Button type="submit">Submit</Button>
-        </form>
-        {uploading && (
-          <h1 className="bg-gray-500 w-[400px] mt-10 px-6 py-2 font-bold text-lg">
-            Uploading....
-          </h1>
-        )}
-        {uploaded && (
-          <h1 className="bg-green-500 w-[400px] mt-10 px-6 py-2 font-bold text-lg">
-            Image Uploaded
-          </h1>
-        )}
-        {}
+      <div className="flex flex-col items-center">
+        <div className="bg-slate-700 flex flex-col gap-5 items-center sm:w-[600px] w-[330px] py-10 mt-10">
+          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
+            <span className="sm:text-xl text-lg font-bold">
+              FrontSide Image :
+            </span>
+            <IKUpload
+              fileName="productimage.jpg"
+              onError={onError}
+              onSuccess={onImageSuccess}
+            />
+          </div>
+          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
+            <span className="sm:text-xl text-lg font-bold">
+              LeftSide Image :
+            </span>
+            <IKUpload
+              fileName="productimage.jpg"
+              onError={onError}
+              onSuccess={onLeftImageSuccess}
+            />
+          </div>
+          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
+            <span className="sm:text-xl text-lg font-bold">
+              RightSide Image :
+            </span>
+            <IKUpload
+              fileName="productimage.jpg"
+              onError={onError}
+              onSuccess={onRightImageSuccess}
+            />
+          </div>
+          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
+            <span className="sm:text-xl text-lg font-bold">
+              BackSide Image :
+            </span>
+            <IKUpload
+              fileName="productimage.jpg"
+              onError={onError}
+              onSuccess={onBackImageSuccess}
+            />
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="text-black sm:w-[500px] w-[300px] flex flex-col gap-5"
+          >
+            <Input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+            />
+            <Input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description"
+            />
+            <Input
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Price"
+            />
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="sm:w-[500px] w-[300px]">
+                    {!category ? "Category" : category}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="">
+                    <div className="flex flex-col cursor-pointer sm:w-[500px] w-[300px]">
+                      <NavigationMenuLink
+                        className="hover:bg-slate-200"
+                        onClick={() => setCategory("Electronics")}
+                      >
+                        Electronics
+                      </NavigationMenuLink>
+                      <NavigationMenuLink
+                        className="hover:bg-slate-200"
+                        onClick={() => setCategory("Beauty")}
+                      >
+                        Beauty
+                      </NavigationMenuLink>
+                      <NavigationMenuLink
+                        className="hover:bg-slate-200"
+                        onClick={() => setCategory("Fashion")}
+                      >
+                        Fashion
+                      </NavigationMenuLink>
+                      <NavigationMenuLink
+                        className="hover:bg-slate-200"
+                        onClick={() => setCategory("Sports")}
+                      >
+                        Sports
+                      </NavigationMenuLink>
+                      <NavigationMenuLink
+                        className="hover:bg-slate-200"
+                        onClick={() => setCategory("Toys")}
+                      >
+                        Toys
+                      </NavigationMenuLink>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            <Button type="submit">Submit</Button>
+          </form>
+          {uploading && (
+            <div className="w-[500px] bg-slate-300 overflow-hidden rounded-2xl">
+              <div className="bg-slate-300 w-[500px] animate-scrollText flex gap-5">
+                <div className="w-52 h-5 bg-green-400 rounded-2xl"></div>
+              </div>
+            </div>
+          )}
+          {uploaded && (
+            <div className="bg-green-500 w-[500px] h-5 rounded-2xl"></div>
+          )}
+          {}
+        </div>
       </div>
     </ImageKitProvider>
   );
