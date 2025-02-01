@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -7,9 +6,14 @@ export default function Home() {
   const { isSignedIn } = useUser();
 
   return (
-    <div className="text-center flex flex-col gap-4 content-center h-screen items-center">
+    <div className="text-center flex flex-col gap-4 content-center h-screen items-center px-10">
       <h1 className="text-2xl mt-4">Hello!</h1>
-      {isSignedIn && <h1 className="text-2xl">You are logged in!</h1>}
+      {isSignedIn && (
+        <div>
+          <h1 className="text-2xl">You are logged in!</h1>
+          <Link href="/dashboard/adminDashboard">Dashboard</Link>
+        </div>
+      )}
       <div className="flex align-center justify-center">
         {!isSignedIn ? (
           <div className="flex gap-2">
