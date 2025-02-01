@@ -78,17 +78,17 @@ function Admin() {
     console.log("Success", res);
   };
 
-  const onLeftImageSuccess = (res: any) => {
+  const onLeftImageSuccess = (res: ImageUploadResponse) => {
     setLeftSide(res.url);
     console.log("Success", res);
   };
 
-  const onRightImageSuccess = (res: any) => {
+  const onRightImageSuccess = (res: ImageUploadResponse) => {
     setRightSide(res.url);
     console.log("Success", res);
   };
 
-  const onBackImageSuccess = (res: any) => {
+  const onBackImageSuccess = (res: ImageUploadResponse) => {
     setBackSide(res.url);
     console.log("Success", res);
   };
