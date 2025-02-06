@@ -140,9 +140,9 @@ function Navbar() {
           </div>
         </div>
         <div className="navbar-center">
-          <a href="/" className="btn btn-ghost text-lg">
+          <Link href="/" className="btn btn-ghost text-lg">
             E-COM
-          </a>
+          </Link>
         </div>
         <div className="flex gap-5 ml-2">
           <SignedIn>
