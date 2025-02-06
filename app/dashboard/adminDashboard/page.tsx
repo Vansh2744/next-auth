@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useRef } from "react";
 import { ImageKitProvider, IKUpload } from "imagekitio-next";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -41,14 +41,23 @@ interface Error {
 function Admin() {
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
-  const [frontSide, setFrontSide] = useState<string | null>(null);
-  const [leftSide, setLeftSide] = useState<string | null>(null);
-  const [rightSide, setRightSide] = useState<string | null>(null);
-  const [backSide, setBackSide] = useState<string | null>(null);
+  const [mainImage, setMainImage] = useState<string | null>(null);
+  const [firstImage, setFirstImage] = useState<string | null>(null);
+  const [secondImage, setSecondImage] = useState<string | null>(null);
+  const [thirdImage, setThirdImage] = useState<string | null>(null);
+  const [fourthImage, setFourthImage] = useState<string | null>(null);
+  const [fifthImage, setFifthImage] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+
+  const mainImageRef = useRef<HTMLInputElement>(null);
+  const firstImageRef = useRef<HTMLInputElement>(null);
+  const secondImageRef = useRef<HTMLInputElement>(null);
+  const thirdImageRef = useRef<HTMLInputElement>(null);
+  const fourthImageRef = useRef<HTMLInputElement>(null);
+  const fifthImageRef = useRef<HTMLInputElement>(null);
 
   const authenticator = async (): Promise<AuthResponse> => {
     try {
@@ -74,20 +83,28 @@ function Admin() {
     console.log("Error", err);
   };
 
-  const onImageSuccess = (res: ImageUploadResponse) => {
-    setFrontSide(res.url);
+  const onMainImageSuccess = (res: ImageUploadResponse) => {
+    setMainImage(res.url);
   };
 
-  const onLeftImageSuccess = (res: ImageUploadResponse) => {
-    setLeftSide(res.url);
+  const onFirstImageSuccess = (res: ImageUploadResponse) => {
+    setFirstImage(res.url);
   };
 
-  const onRightImageSuccess = (res: ImageUploadResponse) => {
-    setRightSide(res.url);
+  const onSecondImageSuccess = (res: ImageUploadResponse) => {
+    setSecondImage(res.url);
   };
 
-  const onBackImageSuccess = (res: ImageUploadResponse) => {
-    setBackSide(res.url);
+  const onThirdImageSuccess = (res: ImageUploadResponse) => {
+    setThirdImage(res.url);
+  };
+
+  const onFourthImageSuccess = (res: ImageUploadResponse) => {
+    setFourthImage(res.url);
+  };
+
+  const onFifthImageSuccess = (res: ImageUploadResponse) => {
+    setFifthImage(res.url);
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -96,10 +113,12 @@ function Admin() {
     try {
       const upload = async () => {
         await axios.post("/api/upload", {
-          frontSide,
-          leftSide,
-          rightSide,
-          backSide,
+          mainImage,
+          firstImage,
+          secondImage,
+          thirdImage,
+          fourthImage,
+          fifthImage,
           title,
           description,
           category,
@@ -125,47 +144,99 @@ function Admin() {
       publicKey={publicKey}
       authenticator={authenticator}
     >
-      <div className="flex flex-col items-center">
-        <div className="bg-slate-700 flex flex-col gap-5 items-center sm:w-[600px] w-[330px] py-10 mt-10">
-          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
-            <span className="sm:text-xl text-lg font-bold">
-              FrontSide Image :
-            </span>
+      <div className="flex flex-col items-center pb-16">
+        <h1 className="sm:text-3xl text-2xl font-bold mt-10">
+          Admin Dashboard
+        </h1>
+        <div className="bg-slate-700 flex flex-col gap-5 items-center sm:w-[600px] w-[330px] py-10 mt-10 rounded-lg">
+          <div className="flex flex-col sm:flex-row gap-5 sm:w-[500px]">
             <IKUpload
-              fileName="productimage.jpg"
+              ref={mainImageRef}
+              style={{ display: "none" }}
               onError={onError}
-              onSuccess={onImageSuccess}
+              onSuccess={onMainImageSuccess}
+              folder="ecommerce"
             />
+            <Button
+              className="sm:w-[500px] w-[300px] sm:text-lg text-sm bg-orange-600 font-bold"
+              onClick={() => mainImageRef.current?.click()}
+            >
+              Upload Main Image
+            </Button>
+
+            <IKUpload
+              ref={firstImageRef}
+              style={{ display: "none" }}
+              onError={onError}
+              onSuccess={onFirstImageSuccess}
+              folder="ecommerce"
+            />
+            <Button
+              className="sm:w-[500px] w-[300px] sm:text-lg text-sm bg-orange-600 font-bold"
+              onClick={() => firstImageRef.current?.click()}
+            >
+              Upload First Image
+            </Button>
           </div>
-          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
-            <span className="sm:text-xl text-lg font-bold">
-              LeftSide Image :
-            </span>
+
+          <div className="flex flex-col sm:flex-row gap-5 sm:w-[500px]">
             <IKUpload
-              fileName="productimage.jpg"
+              ref={secondImageRef}
+              style={{ display: "none" }}
               onError={onError}
-              onSuccess={onLeftImageSuccess}
+              onSuccess={onSecondImageSuccess}
+              folder="ecommerce"
             />
+            <Button
+              className="sm:w-[500px] w-[300px] sm:text-lg text-sm bg-orange-600 font-bold"
+              onClick={() => secondImageRef.current?.click()}
+            >
+              Upload Second Image
+            </Button>
+
+            <IKUpload
+              ref={thirdImageRef}
+              style={{ display: "none" }}
+              onError={onError}
+              onSuccess={onThirdImageSuccess}
+              folder="ecommerce"
+            />
+            <Button
+              className="sm:w-[500px] w-[300px] sm:text-lg text-sm bg-orange-600 font-bold"
+              onClick={() => thirdImageRef.current?.click()}
+            >
+              Upload Third Image
+            </Button>
           </div>
-          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
-            <span className="sm:text-xl text-lg font-bold">
-              RightSide Image :
-            </span>
+
+          <div className="flex flex-col sm:flex-row gap-5 sm:w-[500px]">
             <IKUpload
-              fileName="productimage.jpg"
+              ref={fourthImageRef}
+              style={{ display: "none" }}
               onError={onError}
-              onSuccess={onRightImageSuccess}
+              onSuccess={onFourthImageSuccess}
+              folder="ecommerce"
             />
-          </div>
-          <div className="flex flex-col gap-1 sm:w-[500px] w-[300px]">
-            <span className="sm:text-xl text-lg font-bold">
-              BackSide Image :
-            </span>
+            <Button
+              className="sm:w-[500px] w-[300px] sm:text-lg text-sm bg-orange-600 font-bold"
+              onClick={() => fourthImageRef.current?.click()}
+            >
+              Upload Fourth Image
+            </Button>
+
             <IKUpload
-              fileName="productimage.jpg"
+              ref={fifthImageRef}
+              style={{ display: "none" }}
               onError={onError}
-              onSuccess={onBackImageSuccess}
+              onSuccess={onFifthImageSuccess}
+              folder="ecommerce"
             />
+            <Button
+              className="sm:w-[500px] w-[300px] sm:text-lg text-sm bg-orange-600 font-bold"
+              onClick={() => fifthImageRef.current?.click()}
+            >
+              Upload Fifth Image
+            </Button>
           </div>
           <form
             onSubmit={handleSubmit}
@@ -176,18 +247,21 @@ function Admin() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
+              className="sm:text-lg text-sm"
             />
             <Input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description"
+              className="sm:text-lg text-sm"
             />
             <Input
               type="text"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder="Price"
+              className="sm:text-lg text-sm"
             />
             <NavigationMenu>
               <NavigationMenuList>

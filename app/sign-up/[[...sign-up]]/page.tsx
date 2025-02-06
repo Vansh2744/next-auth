@@ -158,7 +158,10 @@ const Signup = () => {
           </div>
         ) : (
           <div>
-            <form onSubmit={handleVerify}>
+            <form
+              onSubmit={handleVerify}
+              className="flex flex-col justify-center gap-5"
+            >
               <div>
                 <ReactCodeInput
                   type="text"
@@ -170,7 +173,12 @@ const Signup = () => {
                 />
               </div>
               <div id="clerk-captcha"></div>
-              <Button type="submit">Verify</Button>
+              <Button
+                type="submit"
+                className="shadow-sm shadow-gray-400 font-bold"
+              >
+                Verify
+              </Button>
             </form>
           </div>
         )}

@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     try {
-        const { frontSide, leftSide, rightSide, backSide, title, description, price, category } = await req.json();
+        const { mainImage, firstImage, secondImage, thirdImage, fourthImage, fifthImage, title, description, price, category } = await req.json();
 
-        if (!frontSide || !leftSide || !rightSide || !backSide) {
+        if (!mainImage || !firstImage || !secondImage || !thirdImage || !fourthImage || !fifthImage) {
             return NextResponse.json({ message: "All Fileds are required" }, { status: 401 })
         }
 
@@ -15,10 +15,12 @@ export async function POST(req: Request) {
                 description,
                 category,
                 price: Number(price),
-                frontSide,
-                leftSide,
-                rightSide,
-                backSide,
+                mainImage,
+                firstImage,
+                secondImage,
+                thirdImage,
+                fourthImage,
+                fifthImage
             }
         })
 
