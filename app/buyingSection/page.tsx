@@ -186,7 +186,7 @@ function Buying() {
       </div>
       <div className="card bg-base-100 w-full shadow-xl sm:hidden visible">
         <figure>
-          <img src={frameImage} alt="Shoes" />
+          <Image src={frameImage} alt="Shoes" width={100} height={100} />
         </figure>
         <div className="card-body">
           <h2 className="card-title">{title}</h2>
@@ -212,7 +212,7 @@ function Buying() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-3 mt-3 w-full justify-center items-center">
+      <div className="flex flex-col gap-3 mt-3 w-full justify-center items-center sm:hidden visible">
         <div className="flex gap-3">
           <Image
             src={mainImage}

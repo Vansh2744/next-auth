@@ -119,22 +119,22 @@ function Navbar() {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a>Home</a>
+                <Link href="#">Home</Link>
               </li>
               <li>
-                <a>Electronics</a>
+                <Link href="#">Electronics</Link>
               </li>
               <li>
-                <a>Beauty</a>
+                <Link href="#">Beauty</Link>
               </li>
               <li>
-                <a>Fashion</a>
+                <Link href="#">Fashion</Link>
               </li>
               <li>
-                <a>Smartphones</a>
+                <Link href="#">Smartphones</Link>
               </li>
               <li>
-                <a>Laptops</a>
+                <Link href="#">Laptops</Link>
               </li>
             </ul>
           </div>

@@ -15,6 +15,6 @@ export async function GET() {
 
         return NextResponse.json({ products }, { status: 201 })
     } catch (error) {
-        return NextResponse.json({ message: "Unable to fetch cartItems" }, { status: 401 })
+        return NextResponse.json({ message: "Unable to fetch cartItems", error }, { status: 401 })
     }
 }

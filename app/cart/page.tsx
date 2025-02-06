@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface Product {
   product: {
@@ -74,7 +75,9 @@ function Cart() {
       const res = await axios.post("/api/removeCart", { id });
       console.log(res.data);
       setProducts(products.filter((item) => item.product.id !== id));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -92,9 +95,11 @@ function Cart() {
                 key={item?.product.id}
               >
                 <figure>
-                  <img
+                  <Image
                     src={item.product.mainImage}
                     alt={item.product.title}
+                    width={100}
+                    height={100}
                     className="sm:h-[400px] h-[250px] sm:w-[700px] w-full"
                   />
                 </figure>
