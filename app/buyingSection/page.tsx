@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import toast from "react-hot-toast";
@@ -282,4 +282,12 @@ function Buying() {
   );
 }
 
-export default Buying;
+function BuyingPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Buying />
+    </Suspense>
+  );
+}
+
+export default BuyingPage;
