@@ -79,7 +79,7 @@ function Buying() {
   }
 
   return (
-    <div className="px-5 py-10">
+    <div className="px-5 sm:p-0 py-10">
       <div className="py-10 px-10 sm:visible sm:block hidden">
         <div className="flex gap-10 items-center bg-slate-600 h-[600px]">
           <Image
@@ -186,7 +186,13 @@ function Buying() {
       </div>
       <div className="card bg-base-100 w-full shadow-xl sm:hidden visible">
         <figure>
-          <Image src={frameImage} alt="Shoes" width={100} height={100} />
+          <Image
+            src={frameImage}
+            alt="Shoes"
+            width={100}
+            height={100}
+            className="w-full"
+          />
         </figure>
         <div className="card-body">
           <h2 className="card-title">{title}</h2>

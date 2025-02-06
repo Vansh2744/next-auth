@@ -71,7 +71,7 @@ export default function Home() {
     <div className="sm:py-20 py-10 sm:px-10 px-5 grid sm:grid-cols-3 grid-cols-1 gap-20">
       {products.map((product) => (
         <div
-          className="card card-compact bg-base-100 sm:w-96 w-[310px] shadow-xl"
+          className="card card-compact bg-base-100 w-full shadow-xl"
           key={product.id}
         >
           <figure>
