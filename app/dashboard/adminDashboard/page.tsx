@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FormEvent, useRef } from "react";
+import React, { useState, FormEvent, useRef, useEffect } from "react";
 import { ImageKitProvider, IKUpload } from "imagekitio-next";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,8 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import toast from "react-hot-toast";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY;
 const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
@@ -39,6 +41,13 @@ interface Error {
 }
 
 function Admin() {
+  const router = useRouter();
+  const { user } = useUser();
+  useEffect(() => {
+    if (!user) {
+      router.push("/sign-in");
+    }
+  }, [user]);
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(false);
   const [mainImage, setMainImage] = useState<string | null>(null);
@@ -128,7 +137,7 @@ function Admin() {
         setUploaded(true);
         toast.success("Product Uploaded Successfully");
         setTimeout(() => {
-          window.location.reload();
+          router.push("/");
         }, 2000);
       };
 

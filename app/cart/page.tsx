@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 interface Product {
   product: {
@@ -16,6 +18,13 @@ interface Product {
 }
 
 function Cart() {
+  const router = useRouter();
+  const { user } = useUser();
+  useEffect(() => {
+    if (!user) {
+      router.push("/sign-in");
+    }
+  }, [user]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true); // Start with loading as true
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
@@ -25,6 +34,8 @@ function Cart() {
     const fetchProducts = async () => {
       try {
         const res = await axios.get("/api/getCartItems");
+        console.log(res.data.products.product);
+
         setProducts(res.data.products);
 
         // Initialize quantity for each product
@@ -41,7 +52,9 @@ function Cart() {
       }
     };
 
-    fetchProducts();
+    if (user) {
+      fetchProducts();
+    }
   }, []);
 
   // Calculate total whenever quantities or products change

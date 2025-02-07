@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, FormEvent } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 const Signin = () => {
   const [user, setUser] = useState({
@@ -41,6 +42,7 @@ const Signin = () => {
       if (result.status === "complete") {
         console.log(result);
         await setActive({ session: result.createdSessionId });
+        toast.success("Logged in successfully");
         router.push("/");
       } else {
         console.log(result);

@@ -12,6 +12,11 @@ import { useRouter } from "next/navigation";
 function Buying() {
   const { user } = useUser();
   const router = useRouter();
+  useEffect(() => {
+    if (!user) {
+      router.push("/sign-in");
+    }
+  }, [user]);
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -113,7 +118,7 @@ function Buying() {
               ) : (
                 <Button
                   className="bg-orange-600 w-[400px] item-center hover:bg-orange-500"
-                  onClick={checkUser}
+                  onClick={handleCart}
                 >
                   Buy Now
                 </Button>
