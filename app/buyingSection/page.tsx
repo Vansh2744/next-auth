@@ -69,12 +69,6 @@ function Buying() {
     cart();
   }, [user]);
 
-  const checkUser = () => {
-    if (!user) {
-      toast.error("Please Login First");
-    }
-  };
-
   if (locading) {
     return (
       <div className="flex justify-center items-center h-screen">
