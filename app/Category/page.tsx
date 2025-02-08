@@ -23,7 +23,7 @@ function Category() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category") ?? "";
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<Boolean | null>(false);
+  const [loading, setLoading] = useState<boolean | null>(false);
 
   useEffect(() => {
     const getProducts = async () => {
