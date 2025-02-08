@@ -14,32 +14,30 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  firstname     String
-  lastname      String
-  username      String
-  email         String         @unique
-  role          String         @default("user")
-  cartItems     CartItem[]
-  wishlistItems WishlistItem[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id        String     @id @default(uuid())
+  firstname String
+  lastname  String
+  username  String
+  email     String     @unique
+  role      String     @default("user")
+  cartItems CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Product {
-  id            String         @id @default(uuid())
-  title         String
-  description   String?
-  price         Int            @default(0)
-  category      String?
-  mainImage     String
-  firstImage    String?
-  secondImage   String?
-  thirdImage    String?
-  fourthImage   String?
-  fifthImage    String?
-  cartUsers     CartItem[]
-  wishlistUsers WishlistItem[]
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  price       Int        @default(0)
+  category    String?
+  mainImage   String
+  firstImage  String?
+  secondImage String?
+  thirdImage  String?
+  fourthImage String?
+  fifthImage  String?
+  cartUsers   CartItem[]
 }
 
 model CartItem {
@@ -48,15 +46,6 @@ model CartItem {
   userId    String
   product   Product  @relation(fields: [productId], references: [id])
   productId String
-  quantity  Int      @default(1) // Optional field to track quantity
-  createdAt DateTime @default(now())
-}
-
-model WishlistItem {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  product   Product  @relation(fields: [productId], references: [id])
-  productId String
+  quantity  Int      @default(1)
   createdAt DateTime @default(now())
 }

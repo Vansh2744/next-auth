@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Search } from "lucide-react";
 
 interface Product {
   id: string;
@@ -19,67 +19,40 @@ interface Product {
   price: string;
 }
 
-export default function Home() {
+function Category() {
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") ?? "";
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<string | null>(null);
-  const [search, setSearch] = useState<string>("");
+  const [loading, setLoading] = useState<Boolean | null>(false);
 
   useEffect(() => {
     const getProducts = async () => {
       try {
-        setLoading("true");
+        setLoading(true);
         const res = await axios.get("/api/getProduct");
         const filteredProducts = res.data.products.filter((product: Product) =>
-          product.description.toLowerCase().includes(search.toLowerCase())
+          product.category.toLowerCase().includes(category.toLowerCase())
         );
 
         setProducts(filteredProducts);
-        setLoading(null);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setLoading(false);
       }
     };
     getProducts();
-  }, []);
-
-  const handleSearch = async () => {
-    try {
-      setLoading("true");
-      const res = await axios.get("/api/getProduct");
-      const filteredProducts = res.data.products.filter((product: Product) =>
-        product.description.toLowerCase().includes(search.toLowerCase())
-      );
-
-      setProducts(filteredProducts);
-      setLoading(null);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+  }, [category]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-orange-600"></div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-orange-600"></div>
       </div>
     );
   }
-
   return (
     <div>
-      <div className="sm:w-[600px] w-full sm:mt-10 mt-5 sm:px-10 px-5 flex justify-center items-center gap-2">
-        <input
-          type="text"
-          placeholder="Search products"
-          className="w-full p-2 border border-gray-300 rounded-md"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <Search
-          className="cursor-pointer bg-slate-800 h-10 w-10 rounded-md py-2 px-2"
-          onClick={handleSearch}
-        />
-      </div>
       <div className="sm:py-10 py-5 sm:px-10 px-5 grid sm:grid-cols-3 grid-cols-1 gap-20">
         {products.map((product) => (
           <div
@@ -112,3 +85,13 @@ export default function Home() {
     </div>
   );
 }
+
+function CategoryPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Category />
+    </Suspense>
+  );
+}
+
+export default CategoryPage;

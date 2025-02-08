@@ -42,11 +42,36 @@ function Navbar() {
           </Link>
           <div className="flex gap-4 font-bold text-lg">
             <Link href="/">Home</Link>
-            <Link href="#">Electronics</Link>
-            <Link href="#">Fashion</Link>
-            <Link href="#">Beauty</Link>
-            <Link href="#">Smartphones</Link>
-            <Link href="#">Laptops</Link>
+            <Link
+              href={{
+                pathname: "/Category",
+                query: {
+                  category: "Electronics",
+                },
+              }}
+            >
+              Electronics
+            </Link>
+            <Link
+              href={{
+                pathname: "/Category",
+                query: {
+                  category: "Beauty",
+                },
+              }}
+            >
+              Beauty
+            </Link>
+            <Link
+              href={{
+                pathname: "/Category",
+                query: {
+                  category: "Fashion",
+                },
+              }}
+            >
+              Fashion
+            </Link>
           </div>
           <div className="flex gap-5">
             <SignedIn>
@@ -119,22 +144,43 @@ function Navbar() {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <Link href="#">Home</Link>
+                <Link href="/">Home</Link>
               </li>
               <li>
-                <Link href="#">Electronics</Link>
+                <Link
+                  href={{
+                    pathname: "/Category",
+                    query: {
+                      category: "Electronics",
+                    },
+                  }}
+                >
+                  Electronics
+                </Link>
               </li>
               <li>
-                <Link href="#">Beauty</Link>
+                <Link
+                  href={{
+                    pathname: "/Category",
+                    query: {
+                      category: "Beauty",
+                    },
+                  }}
+                >
+                  Beauty
+                </Link>
               </li>
               <li>
-                <Link href="#">Fashion</Link>
-              </li>
-              <li>
-                <Link href="#">Smartphones</Link>
-              </li>
-              <li>
-                <Link href="#">Laptops</Link>
+                <Link
+                  href={{
+                    pathname: "/Category",
+                    query: {
+                      category: "Fashion",
+                    },
+                  }}
+                >
+                  Fashion
+                </Link>
               </li>
             </ul>
           </div>
