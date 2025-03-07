@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Product {
   product: {
@@ -26,7 +27,7 @@ function Cart() {
     }
   }, [user]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true); // Start with loading as true
+  const [loading, setLoading] = useState(true);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const [total, setTotal] = useState(0);
 
@@ -38,7 +39,6 @@ function Cart() {
 
         setProducts(res.data.products);
 
-        // Initialize quantity for each product
         const initialQuantities: { [key: string]: number } = {};
         res.data.products.forEach((product: Product) => {
           initialQuantities[product.product.id] = 1;
@@ -48,7 +48,7 @@ function Cart() {
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false); // Ensure loading state is updated
+        setLoading(false);
       }
     };
 
@@ -57,7 +57,6 @@ function Cart() {
     }
   }, []);
 
-  // Calculate total whenever quantities or products change
   useEffect(() => {
     if (products.length > 0) {
       const newTotal = products.reduce(
@@ -170,9 +169,16 @@ function Cart() {
               ))}
               <p className="text-2xl font-bold mt-5">Total: ₹{total}</p>
             </div>
-            <button className="bg-orange-600 hover:bg-orange-500 text-white py-3 rounded-lg">
-              Checkout
-            </button>
+            <Link
+              href={{
+                pathname: "/paymentPage",
+                query: { products: JSON.stringify(products), total },
+              }}
+            >
+              <button className="bg-orange-600 hover:bg-orange-500 text-white py-3 px-4 rounded-lg">
+                Checkout
+              </button>
+            </Link>
           </div>
         </>
       )}

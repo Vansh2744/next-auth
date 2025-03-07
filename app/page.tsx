@@ -3,19 +3,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { FaHeart } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
 interface Product {
   id: string;
   mainImage: string;
-  firstImage: string;
-  secondImage: string;
-  thirdImage: string;
-  fourthImage: string;
-  fifthImage: string;
   title: string;
   description: string;
-  category: string;
   price: string;
 }
 
@@ -23,6 +18,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<string | null>(null);
   const [search, setSearch] = useState<string>("");
+  const [wishlist, setWishlist] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const getProducts = async () => {
@@ -40,7 +36,7 @@ export default function Home() {
       }
     };
     getProducts();
-  }, []);
+  }, [search]);
 
   const handleSearch = async () => {
     try {
@@ -56,6 +52,37 @@ export default function Home() {
       console.error("Error fetching products:", error);
     }
   };
+
+  const handleWishlist = async (productId: string) => {
+    try {
+      setLoading("true");
+      const res = await axios.post("/api/addWishlist", { productId });
+      console.log(res.data);
+      setWishlist((prev) => ({ ...prev, [productId]: true }));
+      setLoading(null);
+    } catch (error) {
+      console.error(error);
+      setLoading(null);
+    }
+  };
+
+  const checkWishlistStatus = async (productId: string) => {
+    try {
+      setLoading("true");
+      const res = await axios.post("/api/getWishlist", { productId });
+      setWishlist((prev) => ({ ...prev, [productId]: res.data.isWishlisted }));
+      setLoading(null);
+    } catch (error) {
+      console.error(error);
+      setLoading(null);
+    }
+  };
+
+  useEffect(() => {
+    products.forEach((product) => {
+      checkWishlistStatus(product.id);
+    });
+  }, []);
 
   if (loading) {
     return (
@@ -75,10 +102,12 @@ export default function Home() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Search
+        <button
           className="cursor-pointer bg-slate-800 h-10 w-10 rounded-md py-2 px-2"
           onClick={handleSearch}
-        />
+        >
+          <FaSearch className="text-white text-xl" />
+        </button>
       </div>
       <div className="sm:py-10 py-5 sm:px-10 px-5 grid sm:grid-cols-3 grid-cols-1 gap-20">
         {products.map((product) => (
@@ -95,7 +124,7 @@ export default function Home() {
               <span className="text-lg text-orange-600 font-bold">
                 ₹{product.price}
               </span>
-              <div className="card-actions mt-5">
+              <div className="card-actions mt-5 flex items-center justify-between">
                 <Link
                   href={{
                     pathname: "/buyingSection",
@@ -104,6 +133,12 @@ export default function Home() {
                 >
                   <button className="btn btn-primary">Buy Now</button>
                 </Link>
+                <FaHeart
+                  className={`text-2xl hover:cursor-pointer ${
+                    wishlist[product.id] ? "text-red-600" : "text-white"
+                  }`}
+                  onClick={() => handleWishlist(product.id)}
+                />
               </div>
             </div>
           </div>

@@ -87,7 +87,7 @@ function Navbar() {
                 <div className="flex gap-5 font-bold text-lg">
                   <Link href="/cart">Cart</Link>
                   <Link href="/wishlist">Wishlist</Link>
-                  <Link href="/orders">Orders</Link>
+                  <Link href="/order">Orders</Link>
                 </div>
               )}
               <UserButton
@@ -204,7 +204,7 @@ function Navbar() {
               <div className="flex gap-5 font-bold text-lg">
                 <Link href="/cart">Cart</Link>
                 <Link href="/wishlist">Wishlist</Link>
-                <Link href="/orders">Orders</Link>
+                <Link href="/order">Orders</Link>
               </div>
             )}
             <UserButton
